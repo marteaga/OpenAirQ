@@ -1,0 +1,41 @@
+{
+  "name": "aqhi",
+  "version": "0.1.0",
+  "description": "Env Canada Air Quality Health Index ",
+  "keywords": [
+    "opendata",
+    "air quality"
+  ],
+  "maintainers": [
+    {
+      "name": "Mark Arteaga",
+      "email": "info@markarteaga.com",
+      "url": "http://blog.markarteaga.com"
+    }
+  ],
+  "bugs": {
+    "email": "info@markarteaga.com",
+    "url": "http://github.com/marteaga/ec.airquality.api/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/marteaga/ec.airquality.api/blob/master/LICENSE.txt"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "git",
+      "url": "http://github.com/marteaga/ec.airquality.api.git"
+    }
+  ],
+  "dependencies": {
+    "mongoose": "~3.1.1",
+    "memory-cache": "*",
+    "cheerio": "~0.9.2"
+  },
+  "engines": {
+    "node": ">=0.1.9",
+    "npm": "1.1.x"
+  }
+}
