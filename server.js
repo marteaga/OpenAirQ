@@ -142,7 +142,7 @@ function getaqhiData(item, callback){
     // now reverse geocode the locaiont
     console.log(item.link);
     http.get({
-        host:'www.weatheroffice.gc.ca',
+        host:'weather.gc.ca',
         port: 80,
         path: item.link
     },
@@ -156,41 +156,45 @@ function getaqhiData(item, callback){
 
         res.on('end',function(){
             $ = cheerio.load(body);
-            var forc = $('.center #forecastAqhi .periodBox div[class=white] div span');
-            var value = parseInt($('.center #currAqhi1 .currBox div span').text());
-            var ts = $('.center #currAqhi1 #currBox31 span').text().trim();
-            var forcastDates = $('.center #forecastAqhi .periodBox div[class=alignCenter]');
+            
+            $('#currAqhi1 .content p.withBorder span').remove();
+            var value = parseInt($('#currAqhi1 .content p.withBorder').text());
+            var curValueTimeStamp = $('#currAqhi1 .margin-top-small.margin-bottom-small.indent-medium').text().trim();
+            
+            var forc = $('#forecastAqhi div.span-2.row-end');
+            var forcastTimeStamp = $('#forecastAqhi .margin-top-small.margin-bottom-small.indent-medium').text().trim();
             var forItems = [];
 
             // Create the forcast items
-            var t = parseInt(forc.eq(0).text());
-            if(t){
-                var t =parseInt(forc.eq(0).text());
+            var date = forc.eq(0).text();
+            if(date){
+                var risk =parseInt($('#forecastAqhi div.span-2.row-end b').eq(0).text());
                 forItems.push({
-                   risk: t,
-                     desc: getRiskDescription(t),
-                    date: forcastDates.eq(0).text().trim(),
-                    timeStamp: ts
+                   risk: risk,
+                     desc: getRiskDescription(risk),
+                    date: date,
+                    timeStamp: forcastTimeStamp
                 })
             }
-            t = parseInt(forc.eq(2).text());
-            if(t){
+            date = forc.eq(2).text();
+            if(date){
+                var risk =parseInt($('#forecastAqhi div.span-2.row-end b').eq(1).text());
                 forItems.push({
-                   risk: t,
-                     desc: getRiskDescription(t),
-                    date: forcastDates.eq(1).text().trim(),
-                    timeStamp: ts
+                   risk: risk,
+                     desc: getRiskDescription(risk),
+                    date: date,
+                    timeStamp: forcastTimeStamp
                 })
 
             }
-            t = parseInt(forc.eq(4).text());
-            if(t){
-                
+            date = forc.eq(4).text();
+            if(date){
+                var risk =parseInt($('#forecastAqhi div.span-2.row-end b').eq(2).text());
                 forItems.push({
-                   risk: t,
-                     desc: getRiskDescription(t),
-                    date: forcastDates.eq(2).text().trim(),
-                    timeStamp: ts
+                   risk: risk,
+                     desc: getRiskDescription(risk),
+                    date: date,
+                    timeStamp: forcastTimeStamp
                 })
 
             }
@@ -200,14 +204,14 @@ function getaqhiData(item, callback){
                 current:{
                     risk: value,
                     desc: getRiskDescription(value),
-                    timeStamp: $('.center #currAqhi1 #currBox31 span').text().trim()
+                    timeStamp: curValueTimeStamp
                 },
                 forcast:
                 {
                     issued: $('.center #forecastAqhi .issuedat span').text().trim(),
                     items:forItems
                 },
-                source: 'http://www.weatheroffice.gc.ca{0}'.format(item.link),
+                source: 'http://weather.gc.ca{0}'.format(item.link),
                 disclaimer: 'OpenAirQ data is provided by Environment Canada website and can be found at http://www.weatheroffice.gc.ca/airquality/pages/landing_e.html.  OpenAirQ merely takes the Environment Canada data and makes it developer friendly.',
                 credits: 'Data provided by Environment Canada, OpenAirQ provided by RedBit Development. Source code available at https://github.com/marteaga/OpenAirQ',
 
